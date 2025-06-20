@@ -6,6 +6,8 @@ import userRouter from './routes/authRoutes.js';
 import incomeRouter from './routes/incomeRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url'; // ✅ Fix added here
+import expenseRouter from './routes/expenseRoutes.js';
+import dashboardRouter from './routes/dashboardRoutes.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,6 +24,8 @@ app.use(cors());
 // API Endpoints
 app.use('/api/user', userRouter);
 app.use('/api/income', incomeRouter);
+app.use('/api/expense', expenseRouter);
+app.use('/api/dashboard', dashboardRouter)
 
 app.get('/', (req, res) => {
     res.send('API working');
