@@ -199,8 +199,7 @@ Personal Finance Tracker+/
 ```env
 PORT=4000                                    # Server port
 MONGODB_URI=mongodb://localhost:27017        # MongoDB connection
-JWT_SECRET=your_jwt_secret_here              # JWT signing secret
-NODE_ENV=development                         # Environment mode
+JWT_SECRET=your_secure_jwt_secret_key_replace_this_with_actual_secret             # JWT signing secret
 ```
 
 ### API Endpoints
