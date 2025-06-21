@@ -3,6 +3,8 @@ import AuthLayout from "../components/AuthLayout";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import { validateEmail } from "../utils/helper";
+import axiosInstance from "../utils/axiosInstance";
+import { API_PATHS } from "../utils/apiPaths";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,7 +13,6 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  // Submit Handler for the login form submission
   const OnSubmitHandler = async (e) => {
     e.preventDefault();
 
@@ -23,8 +24,27 @@ const Login = () => {
       setError("Please enter the password");
       return;
     }
+
     setError("");
-    // Login API Call
+    try {
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email,
+        password,
+      });
+
+      const { token } = response.data;
+
+      if (token) {
+        localStorage.setItem("token", token);
+        navigate("/home");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        setError("Invalid email or password");
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    }
   };
 
   return (
@@ -40,22 +60,29 @@ const Login = () => {
             placeholder="abc@gmail.com"
             value={email}
             label="Email Address"
-            onChange={({ target }) => setEmail(target.value)}
+            onChange={({ target }) => {
+              setEmail(target.value);
+              setError(null);
+            }}
           />
           <Input
             type="password"
             placeholder="********"
             value={password}
             label="Password"
-            onChange={({ target }) => setPassword(target.value)}
+            onChange={({ target }) => {
+              setPassword(target.value);
+              setError(null);
+            }}
           />
 
-          {error && <p className="text-red-500 text-xs pb-2.5">(error)</p>}
+          {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
 
           <button className="btn-primary" type="submit">
             Log In
           </button>
-          <p className="text-[13xl]">
+
+          <p className="text-sm mt-4">
             Don't have an account?{" "}
             <Link className="font-medium text-primary underline" to="/signup">
               SignUp
