@@ -67,9 +67,10 @@ const getDashboardData = async (req, res) => {
       totalIncome: totalIncome[0]?.total || 0,
       totalExpense: totalExpense[0]?.total || 0,
       last30DaysIncomeTransactions,
-      totalIncomeLast30Days: totalIncomeLast30Days[0]?.total || 0,
-      last30DaysExpenseTransactions,
-      totalExpenseLast30Days: totalExpenseLast30Days[0]?.total || 0,
+      totalIncomeLast30Days: totalIncomeLast30Days,
+      last30DaysExpenseTransactions: { transactions: last30DaysExpenseTransactions },
+      totalExpenseLast30Days: totalExpenseLast30Days,
+      RecentTransactions: lastTransaction.slice(0, 5),
     });
 
   } catch (error) {

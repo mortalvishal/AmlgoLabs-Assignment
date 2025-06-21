@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AuthLayout from "../components/AuthLayout";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import { validateEmail } from "../utils/helper";
 import axiosInstance from "../utils/axiosInstance";
 import { API_PATHS } from "../utils/apiPaths";
+import { UserContext } from "../context/UserContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+
+  const { updateUser } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -32,14 +35,19 @@ const Login = () => {
         password,
       });
 
-      const { token } = response.data;
+      const { token, user } = response.data;
 
       if (token) {
         localStorage.setItem("token", token);
+        updateUser(user);
         navigate("/home");
+      } else {
+        setError("Login failed. Please try again.");
       }
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message);
+      } else if (error.response && error.response.status === 401) {
         setError("Invalid email or password");
       } else {
         setError("An error occurred. Please try again later.");

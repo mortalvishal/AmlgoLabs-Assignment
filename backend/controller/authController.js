@@ -31,7 +31,7 @@ const registerUser = async (req, res) => {
     }).save();
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
-    res.json({ success: true, token });
+    res.json({ success: true, token, user: { id: user._id, fullName: user.fullName, email: user.email, profileImageUrl: user.profileImageUrl } });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -54,7 +54,16 @@ const loginUser = async (req, res) => {
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    res.json({ success: true, token });
+    res.json({ 
+      success: true, 
+      token, 
+      user: { 
+        id: user._id, 
+        fullName: user.fullName, 
+        email: user.email, 
+        profileImageUrl: user.profileImageUrl 
+      } 
+    });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });

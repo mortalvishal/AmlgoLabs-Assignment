@@ -35,7 +35,7 @@ const ProfilePhotoSelector = ({ image, setImage }) => {
           <LuUser className="text-4xl text-primary" />
           <button
             type="button"
-            className="w-8 h-8 items-center justify-center bg-primary text-white rounded-full absolute -bottom-1 -right-1"
+            className="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full absolute -bottom-1 -right-1"
             onClick={onChooseFile}
           >
             <LuUpload />
@@ -50,7 +50,7 @@ const ProfilePhotoSelector = ({ image, setImage }) => {
           />
           <button
             type="button"
-            className="w-8 h8 bg-red-500 flex items-center justify-center text-white rounded-full absolute -bottom-1 -right-1"
+            className="w-8 h-8 bg-red-500 flex items-center justify-center text-white rounded-full absolute -bottom-1 -right-1"
             onClick={handleRemoveImage}
           >
             <LuTrash />

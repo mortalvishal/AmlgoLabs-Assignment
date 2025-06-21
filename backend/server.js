@@ -31,6 +31,16 @@ app.get('/', (req, res) => {
     res.send('API working');
 });
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.json({
+        status: 'OK',
+        message: 'Personal Finance Tracker+ API is running',
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime()
+    });
+});
+
 // Server uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
