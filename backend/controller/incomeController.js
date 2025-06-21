@@ -7,24 +7,33 @@ import fs from "fs";
 const addIncome = async (req, res) => {
   const userId = req.user.id;
   try {
-    const { icon, source, amount, date } = req.body;
-    if (!source || !amount || !date) {
+    const { icon, title, category, source, amount, date, description } = req.body;
+    
+    // Use title as source if source is not provided (for frontend compatibility)
+    const incomeSource = source || title || category;
+    
+    if (!incomeSource || !amount || !date) {
       return res.json({
         success: false,
-        message: "Please fill all the fields",
+        message: "Please fill all the required fields",
       });
     }
+    
     const newIncome = new incomeModel({
       userId,
       icon,
-      source,
-      amount,
+      source: incomeSource,
+      amount: parseFloat(amount),
       date: new Date(date),
     });
 
     await newIncome.save();
 
-    res.json({ success: true, token });
+    res.json({ 
+      success: true, 
+      message: "Income added successfully",
+      income: newIncome 
+    });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });

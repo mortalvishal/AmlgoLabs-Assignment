@@ -26,9 +26,10 @@ const Home = () => {
       const response = await axiosInstance.get(API_PATHS.DASHBOARD.GET_DATA);
       if(response.data && response.data.success){
         setDashboardData(response.data)
+        console.log('Dashboard data fetched:', response.data); // Debug log
       }
     } catch (error) {
-      console.log("SOmething went wrong. Please try again", error);
+      console.log("Something went wrong. Please try again", error);
     } finally {
       setLoading(false)
     }

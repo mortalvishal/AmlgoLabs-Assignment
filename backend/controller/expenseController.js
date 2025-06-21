@@ -7,24 +7,33 @@ import fs from 'fs';
 const addExpense = async (req, res) => {
   const userId = req.user.id;
   try {
-    const { icon, category, amount, date } = req.body;
-    if (!category || !amount || !date) {
+    const { icon, title, category, amount, date, description } = req.body;
+    
+    // Use title as category if category is not provided (for frontend compatibility)
+    const expenseCategory = category || title;
+    
+    if (!expenseCategory || !amount || !date) {
       return res.json({
         success: false,
-        message: "Please fill all the fields",
+        message: "Please fill all the required fields",
       });
     }
+    
     const newExpense = new expenseModel({
       userId,
       icon,
-      category,
-      amount,
+      category: expenseCategory,
+      amount: parseFloat(amount),
       date: new Date(date),
     });
 
     await newExpense.save();
 
-    res.json({ success: true, token });
+    res.json({ 
+      success: true, 
+      message: "Expense added successfully",
+      expense: newExpense 
+    });
   } catch (error) {
     console.log(error);
     res.json({success:false, message: error.message})
@@ -78,14 +87,14 @@ const downloadExpensePDF = async (req, res) => {
     doc.moveDown();
 
     // Table Header
-    doc.fontSize(12).text('category', 50, doc.y, { continued: true });
+    doc.fontSize(12).text('Category', 50, doc.y, { continued: true });
     doc.text('Amount', 200, doc.y, { continued: true });
     doc.text('Date', 300, doc.y);
     doc.moveDown();
 
     // Table Body
-    income.forEach((item) => {
-      doc.text(item.source, 50, doc.y, { continued: true });
+    expense.forEach((item) => {
+      doc.text(item.category, 50, doc.y, { continued: true });
       doc.text(item.amount.toString(), 200, doc.y, { continued: true });
       doc.text(new Date(item.date).toLocaleDateString(), 300, doc.y);
       doc.moveDown();

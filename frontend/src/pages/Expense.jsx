@@ -38,7 +38,7 @@ const Expense = () => {
     try {
       const response = await axiosInstance.get(API_PATHS.EXPENSE.GET_ALL_EXPENSE)
       if (response.data && response.data.success) {
-        setExpenseData(response.data.expenses || [])
+        setExpenseData(response.data.expense || [])
       }
     } catch (error) {
       console.log("Something went wrong. Please try again", error);
@@ -115,7 +115,7 @@ const Expense = () => {
   const handleEdit = (expense) => {
     setEditingExpense(expense)
     setFormData({
-      title: expense.title,
+      title: expense.category, // Map category to title for form
       amount: expense.amount.toString(),
       category: expense.category,
       date: new Date(expense.date).toISOString().split('T')[0],
@@ -208,7 +208,7 @@ const Expense = () => {
                   {expenseData.map((expense) => (
                     <div key={expense._id} className='flex items-center justify-between p-4 bg-gray-50 rounded-lg'>
                       <div className='flex-1'>
-                        <h3 className='font-medium text-gray-900'>{expense.title}</h3>
+                        <h3 className='font-medium text-gray-900'>{expense.category}</h3>
                         <p className='text-sm text-gray-600'>{expense.category}</p>
                         <p className='text-xs text-gray-500'>
                           {new Date(expense.date).toLocaleDateString()}
@@ -348,7 +348,7 @@ const Expense = () => {
             <div className='bg-white p-6 rounded-lg w-full max-w-md mx-4'>
               <h2 className='text-xl font-bold mb-4 text-red-600'>Confirm Delete</h2>
               <p className='text-gray-600 mb-6'>
-                Are you sure you want to delete "{openDeleteAlert.data?.title}"? This action cannot be undone.
+                Are you sure you want to delete "{openDeleteAlert.data?.category}"? This action cannot be undone.
               </p>
               <div className='flex gap-3 justify-end'>
                 <button

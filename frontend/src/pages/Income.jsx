@@ -34,7 +34,7 @@ const Income = () => {
     try {
       const response = await axiosInstance.get(API_PATHS.INCOME.GET_ALL_INCOME)
       if (response.data && response.data.success) {
-        setIncomeData(response.data.incomes || [])
+        setIncomeData(response.data.income || [])
       }
     } catch (error) {
       console.log("Something went wrong. Please try again", error);
@@ -111,9 +111,9 @@ const Income = () => {
   const handleEdit = (income) => {
     setEditingIncome(income)
     setFormData({
-      title: income.title,
+      title: income.source, // Map source to title for form
       amount: income.amount.toString(),
-      category: income.category,
+      category: income.source, // Map source to category for form
       date: new Date(income.date).toISOString().split('T')[0],
       description: income.description || ''
     })
@@ -293,7 +293,7 @@ const Income = () => {
             <div className='bg-white p-6 rounded-lg w-full max-w-md mx-4'>
               <h2 className='text-xl font-bold mb-4 text-red-600'>Confirm Delete</h2>
               <p className='text-gray-600 mb-6'>
-                Are you sure you want to delete "{openDeleteAlert.data?.title}"? This action cannot be undone.
+                Are you sure you want to delete "{openDeleteAlert.data?.source}"? This action cannot be undone.
               </p>
               <div className='flex gap-3 justify-end'>
                 <button

@@ -45,8 +45,8 @@ const IncomeOverview = ({transactions, onEdit, onDelete, loading}) => {
                     {transactions.map((income) => (
                         <div key={income._id} className='flex items-center justify-between p-4 bg-gray-50 rounded-lg'>
                             <div className='flex-1'>
-                                <h3 className='font-medium text-gray-900'>{income.title}</h3>
-                                <p className='text-sm text-gray-600'>{income.category}</p>
+                                <h3 className='font-medium text-gray-900'>{income.source}</h3>
+                                <p className='text-sm text-gray-600'>{income.source}</p>
                                 <p className='text-xs text-gray-500'>
                                     {new Date(income.date).toLocaleDateString()}
                                 </p>

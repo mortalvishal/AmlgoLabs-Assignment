@@ -47,19 +47,19 @@ const getDashboardData = async (req, res) => {
 
     // fetch last 5 transactions ( income + expense)
     const lastTransaction = [
-        ...(await incomeModel.find({userId}).sort({userId: -1}).limit(5)).map(
+        ...(await incomeModel.find({userId}).sort({date: -1}).limit(5)).map(
             (txn) => ({
                 ...txn.toObject(),
                 type: "income"
             })
         ),
-        ...(await expenseModel.find({userId}).sort({userId: -1}).limit(5)).map(
+        ...(await expenseModel.find({userId}).sort({date: -1}).limit(5)).map(
             (txn) => ({
                 ...txn.toObject(),
                 type: "expense"
             })
         ),
-    ].sort((a,b) => b.date - a.date);
+    ].sort((a,b) => new Date(b.date) - new Date(a.date));
 
     res.json({
       success: true,
